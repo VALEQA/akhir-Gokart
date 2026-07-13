@@ -1,0 +1,448 @@
+/* ==========================================
+   OPEN MATCH PAGE STYLES
+   ========================================== */
+
+.filter-section {
+    margin-bottom: 1.5rem;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.btn-filter {
+    padding: 10px 20px;
+    width: auto;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Open Match Section */
+.open-match-section {
+    margin-bottom: 2rem;
+}
+
+.open-match-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.open-match-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.2rem;
+}
+
+/* Match Card */
+.open-match-card {
+    border-left: 5px solid var(--primary);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.open-match-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(
+        135deg,
+        transparent 50%,
+        rgba(230, 57, 70, 0.03) 50%
+    );
+    pointer-events: none;
+}
+
+.open-match-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.partisipasi-card {
+    border-left-color: #10b981;
+}
+
+/* Match Header */
+.match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.host-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.host-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.host-name {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-dark);
+    display: block;
+}
+
+.match-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.match-badge:not(.badge-joined):not(.badge-host) {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-host {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-joined {
+    background: #d1fae5;
+    color: #065f46;
+    font-size: 0.75rem;
+    padding: 4px 12px;
+}
+
+/* Slot Indicator */
+.slot-indicator {
+    text-align: center;
+    background: var(--bg-body);
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.slot-filled {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.slot-separator {
+    color: var(--text-gray);
+    margin: 0 2px;
+}
+
+.slot-total {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-dark);
+}
+
+.slot-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Match Details */
+.match-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.detail-row span:first-child {
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Match Note */
+.match-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0.7rem;
+    background: #fffbeb;
+    border-radius: 8px;
+    border: 1px solid #fde68a;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: #92400e;
+}
+
+/* Match Action Buttons */
+.match-action {
+    margin-top: auto;
+}
+
+.btn-join {
+    background: var(--primary);
+    color: white;
+    width: 100%;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-join:hover {
+    background: var(--primary-dark);
+    transform: scale(1.02);
+}
+
+.btn-joined {
+    background: #d1fae5;
+    color: #065f46;
+    width: 100%;
+    border: 1px solid #a7f3d0;
+    cursor: default;
+}
+
+.btn-joined:hover {
+    background: #d1fae5;
+    box-shadow: none;
+}
+
+.btn-full {
+    background: #f3f4f6;
+    color: #9ca3af;
+    width: 100%;
+    cursor: default;
+}
+
+.btn-full:hover {
+    background: #f3f4f6;
+    box-shadow: none;
+}
+
+.btn-cancel {
+    background: white;
+    color: #dc2626;
+    border: 1.5px solid #fecaca;
+    width: 100%;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background: #fef2f2;
+    border-color: #dc2626;
+}
+
+/* Empty State */
+.empty-match {
+    text-align: center;
+    padding: 3rem 2rem;
+    grid-column: 1 / -1;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-match h3 {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.empty-match p {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+
+/* ==========================================================================
+   MASTER RESPONSIVE MOBILE (versi tunggal, konsisten di semua halaman)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 1. KUNCI MATI CONTAINER AGAR TIDAK MELUBER KE KANAN */
+  body, html {
+    overflow-x: hidden !important;
+    width: 100vw !important;
+  }
+
+  .container {
+    flex-direction: column !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* 2. PAKSA SIDEBAR PINDAH KE BAWAH SECARA SEMPURNA */
+  .sidebar {
+    width: 100% !important;
+    height: 65px !important;
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    flex-direction: row !important;
+    padding: 0 !important;
+    border-top: 1px solid #ddd !important;
+    border-right: none !important;
+    background-color: var(--white) !important;
+    z-index: 9999 !important;
+  }
+
+  /* 3. SEMBUNYIKAN ELEMEN YANG BIKIN PENUH (logout TETAP TAMPIL sebagai ikon) */
+  .brand,
+  .sidebar-user {
+    display: none !important;
+  }
+
+  .sidebar-top {
+    display: flex !important;
+    align-items: center !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    overflow: visible !important;
+  }
+
+  .sidebar-bottom {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    flex: 0 0 auto !important;
+    height: 100% !important;
+  }
+
+  .sidebar-bottom form {
+    margin: 0 !important;
+    display: flex !important;
+  }
+
+  /* 4. MENU BAWAH BISA DI-SCROLL KE SAMPING */
+  .nav-menu {
+    display: flex !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 10px !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 10px !important;
+  }
+
+  .nav-menu::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .nav-link {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 10px 15px !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+    border-radius: 20px !important;
+  }
+
+  /* 5. TOMBOL LOGOUT JADI IKON */
+  .logout-btn {
+    font-size: 0 !important;
+    padding: 10px !important;
+    width: auto !important;
+    border: none !important;
+  }
+
+  .logout-btn::before {
+    content: "🚪";
+    font-size: 1.4rem;
+  }
+
+  /* 6. BEBASKAN AREA KONTEN UTAMA */
+  .main {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 1.5rem 1rem 90px 1rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 7. KARTU STATISTIK & GRID JADI SATU KOLOM */
+  .stats,
+  .aksi-container,
+  .paket-container {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+    width: 100% !important;
+  }
+
+  .booking-box {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  .booking-right,
+  .booking-right button {
+    width: 100% !important;
+  }
+
+  /* 8. TABEL BISA DIGESER, TIDAK HANCUR */
+  .table-container,
+  .racing-table,
+  .leaderboard-table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .card {
+    width: 100% !important;
+    overflow-x: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  table {
+    min-width: 500px !important;
+  }
+}
