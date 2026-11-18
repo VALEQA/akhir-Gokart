@@ -1,0 +1,4 @@
+# Bukti transfer adalah data pribadi user — JANGAN pernah di-commit.
+# Folder ini harus tetap ada di repo (kosong) supaya upload bisa ditulis.
+*
+!.gitignore
