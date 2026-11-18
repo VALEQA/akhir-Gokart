@@ -73,13 +73,35 @@ class BookingController extends Controller
         $user_id = Auth::id();
         $user_logged = Auth::user();
 
-        // Menggunakan tanda petik pada 'p.id' agar tidak memicu error undefined constant
-        $riwayat = DB::table('booking as b')
+        // Bagian A: booking milik sendiri (sebagai host)
+        $bookingSendiri = DB::table('booking as b')
             ->join('paket_bermain as p', 'b.paket_id', '=', 'p.id')
-            ->select('b.*', 'p.nama_paket')
-            ->where('b.user_id', $user_id)
-            ->orderBy('b.tanggal_booking', 'DESC')
-            ->orderBy('b.jam_booking', 'DESC')
+            ->select(
+                'b.id', 'b.status', 'b.bukti_transfer', 'b.tanggal_booking', 'b.jam_booking',
+                'b.total_harga', 'p.nama_paket', DB::raw('0 as is_partisipan')
+            )
+            ->where('b.user_id', $user_id);
+
+        // Bagian B: sesi Open Match yang kita IKUTI (bukan yang kita buat sendiri).
+        // Status & bukti transfer di sini pakai punya PARTISIPAN sendiri (pom.*),
+        // bukan punya host, dan nominalnya pakai harga satuan paket (bukan total booking host).
+        $partisipasiRiwayat = DB::table('peserta_open_match as pom')
+            ->join('booking as b', 'pom.booking_id', '=', 'b.id')
+            ->join('paket_bermain as p', 'b.paket_id', '=', 'p.id')
+            ->select(
+                'b.id',
+                DB::raw("CASE WHEN pom.status = 'dibatalkan' THEN 'dibatalkan' ELSE pom.status_bayar END as status"),
+                'pom.bukti_transfer',
+                'b.tanggal_booking', 'b.jam_booking',
+                DB::raw('p.harga as total_harga'),
+                'p.nama_paket',
+                DB::raw('1 as is_partisipan')
+            )
+            ->where('pom.user_id', $user_id);
+
+        $riwayat = $bookingSendiri->unionAll($partisipasiRiwayat)
+            ->orderBy('tanggal_booking', 'DESC')
+            ->orderBy('jam_booking', 'DESC')
             ->get();
 
         // Ganti dari view('booking.riwayat') menjadi:

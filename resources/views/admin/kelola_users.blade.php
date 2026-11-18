@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoKart Admin - Kelola Users</title>
-    <link rel="stylesheet" href="{{ asset('public/style-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('style-admin.css') }}">
     <style>
         .badge-role { padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
         .role-admin { background-color: #fecdd3; color: #9f1239; }

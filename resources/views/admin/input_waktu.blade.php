@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoKart Admin - Input Waktu</title>
-    <link rel="stylesheet" href="{{ asset('public/style-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('style-admin.css') }}">
     <style>
         .form-waktu { display: flex; gap: 8px; align-items: center; }
         .input-waktu { width: 80px; padding: 0.4rem; border: 1px solid #ddd; border-radius: 6px; text-align: center; font-size: 0.9rem; }

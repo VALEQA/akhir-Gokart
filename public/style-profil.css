@@ -1,5 +1,6 @@
 :root {
   --primary: #e63946;
+  --primary-dark: #b3212f;
   --primary-light: #ffe5e5;
   --dark: #1d3557;
   --light: #f1faee;
@@ -8,7 +9,22 @@
   --bg-body: #f8f9fa;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   --transition: all 0.3s ease;
+
+  /* Tema kartu lisensi & rank */
+  --carbon: #10151c;
+  --carbon-light: #1c2530;
+  --gold: #ffb703;
+  --gold-dark: #c98a00;
+  --font-display: "Rajdhani", "Segoe UI", sans-serif;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 
 * {
   margin: 0;
@@ -134,7 +150,10 @@ body {
 }
 
 .header h1 {
-  font-size: 2.2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.4rem;
+  letter-spacing: 0.3px;
   margin-bottom: 0.5rem;
 }
 
@@ -148,6 +167,409 @@ body {
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: var(--shadow);
+}
+
+/* ==========================================================================
+   ALERT (dipakai global di halaman ini)
+   ========================================================================== */
+.alert {
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.3px;
+  border-left: 4px solid var(--primary);
+  padding-left: 10px;
+  margin-bottom: 1.5rem;
+  color: var(--dark);
+}
+
+.field-hint {
+  color: var(--gray);
+  font-size: 0.75rem;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.field-error {
+  color: var(--primary);
+  font-size: 0.78rem;
+  display: block;
+  margin-top: 0.3rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   KARTU LISENSI PEMBALAP (signature element)
+   ========================================================================== */
+.license-card {
+  position: relative;
+  background:
+    radial-gradient(1100px 260px at 15% -20%, rgba(230, 57, 70, 0.35), transparent 60%),
+    linear-gradient(120deg, var(--carbon) 0%, var(--carbon-light) 55%, var(--carbon) 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 12px 30px rgba(16, 21, 28, 0.35);
+  animation: license-in 0.5s ease both;
+}
+
+@keyframes license-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.license-flag-strip {
+  height: 10px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    #ffffff 0 14px,
+    var(--carbon) 14px 28px
+  );
+  opacity: 0.9;
+}
+
+.license-body {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 2.2rem 2.2rem;
+  flex-wrap: wrap;
+}
+
+/* --- Foto profil hexagon --- */
+.license-photo-block {
+  flex-shrink: 0;
+  text-align: center;
+  position: relative;
+}
+
+.avatar-hex {
+  width: 118px;
+  height: 128px;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  background: linear-gradient(160deg, var(--primary), var(--primary-dark));
+  padding: 3px;
+  margin: 0 auto;
+}
+
+.avatar-hex img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: block;
+  background: var(--carbon-light);
+}
+
+.photo-form {
+  display: inline-block;
+}
+
+.avatar-edit-btn {
+  position: absolute;
+  bottom: 6px;
+  right: -2px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--carbon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 3px solid var(--carbon);
+  transition: var(--transition);
+}
+
+.avatar-edit-btn:hover {
+  transform: scale(1.08);
+  background: #ffca3a;
+}
+
+.avatar-remove-link {
+  display: block;
+  margin: 0.6rem auto 0;
+  background: none;
+  border: none;
+  color: #b8c2cf;
+  font-size: 0.75rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.avatar-remove-link:hover {
+  color: var(--white);
+}
+
+/* --- Info tengah --- */
+.license-info-block {
+  flex: 1;
+  min-width: 220px;
+  color: var(--white);
+}
+
+.license-eyebrow {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.license-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9rem;
+  letter-spacing: 0.4px;
+  margin-bottom: 0.3rem;
+}
+
+.license-id {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  color: #b8c2cf;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 0.2rem 0.8rem;
+  margin-bottom: 1.1rem;
+}
+
+.license-meta-row {
+  display: flex;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.license-meta-item small {
+  display: block;
+  color: #8a96a5;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 0.15rem;
+}
+
+.license-meta-item span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+/* --- Blok rank di kanan kartu --- */
+.license-rank-block {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 1rem 1.4rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 183, 3, 0.35);
+  border-radius: 14px;
+  min-width: 150px;
+}
+
+.rank-medal {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 18px rgba(255, 183, 3, 0.45);
+  background: var(--carbon-light);
+}
+
+.rank-medal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rank-medal-fallback {
+  display: none;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  background: var(--carbon-light);
+}
+
+.rank-medal-fallback.small {
+  font-size: 1.1rem;
+}
+
+.license-rank-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.license-rank-count {
+  font-size: 0.72rem;
+  color: #b8c2cf;
+}
+
+/* ==========================================================================
+   TREK PROGRES RANK
+   ========================================================================== */
+.rank-card {
+  margin-bottom: 1.5rem;
+}
+
+.rank-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.2rem;
+}
+
+.rank-card-head .card-title {
+  margin-bottom: 0;
+}
+
+.rank-next-hint {
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+
+.rank-next-hint strong {
+  color: var(--primary);
+}
+
+.rank-next-hint.rank-maxed {
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.race-track {
+  position: relative;
+  height: 8px;
+  margin: 0 20px 3.2rem;
+}
+
+.race-track-road {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-body);
+  border-radius: 999px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #d9dee3 0 10px,
+    transparent 10px 20px
+  );
+  background-position: center;
+  background-size: 100% 2px;
+  background-repeat: repeat-x;
+}
+
+.race-track-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--gold));
+  transition: width 0.6s ease;
+}
+
+.race-track-kart {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.4rem;
+  transition: left 0.6s ease;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.25));
+}
+
+.race-checkpoint {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90px;
+}
+
+.race-checkpoint-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid #dfe3e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 2.1rem;
+  transition: var(--transition);
+}
+
+.race-checkpoint-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.race-checkpoint.reached .race-checkpoint-badge {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(255, 183, 3, 0.25);
+}
+
+.race-checkpoint-label {
+  position: absolute;
+  top: 46px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--dark);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.race-checkpoint-min {
+  position: absolute;
+  top: 64px;
+  font-size: 0.68rem;
+  color: var(--gray);
+}
+
+@media (max-width: 700px) {
+  .race-checkpoint-label,
+  .race-checkpoint-min {
+    display: none;
+  }
+  .race-track {
+    margin-bottom: 1.2rem;
+  }
 }
 
 /* ==========================================================================
@@ -198,7 +620,8 @@ body {
 .save-btn {
   display: inline-block;
   width: 100%;
-  padding: 0.8rem;
+  margin-top: 1rem;
+  padding: 0.9rem;
   background-color: var(--primary);
   color: var(--white);
   border: none;
@@ -215,22 +638,13 @@ body {
   box-shadow: 0 4px 10px rgba(230, 57, 70, 0.2);
 }
 
-/* ALERT / NOTIFIKASI */
-.alert {
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+.save-btn-dark {
+  background-color: var(--dark);
 }
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-.alert-danger {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+
+.save-btn-dark:hover {
+  background-color: #142743;
+  box-shadow: 0 4px 10px rgba(29, 53, 87, 0.25);
 }
 
 /* ==========================================================================
@@ -396,5 +810,20 @@ body {
 
   table {
     min-width: 500px !important;
+  }
+
+  /* 9. KARTU LISENSI JADI VERTIKAL DI MOBILE */
+  .license-body {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 1.6rem 1.2rem 1.8rem !important;
+  }
+
+  .license-meta-row {
+    justify-content: center !important;
+  }
+
+  .license-rank-block {
+    width: 100% !important;
   }
 }

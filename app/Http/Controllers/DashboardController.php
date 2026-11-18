@@ -50,7 +50,7 @@ class DashboardController extends Controller
                 DB::raw('(SELECT COUNT(*) FROM peserta_open_match WHERE peserta_open_match.booking_id = booking.id AND peserta_open_match.status = "bergabung") as jumlah_peserta')
             )
             ->where('booking.is_open_match', 1)
-            ->where('booking.status', 'aktif')
+            ->where('booking.status', 'selesai')
             ->where('booking.user_id', '!=', $user_id)
             ->where(function($query) {
                 $query->whereRaw('booking.tanggal_booking > CURDATE()')
@@ -71,7 +71,7 @@ class DashboardController extends Controller
             ->join('paket_bermain', 'booking.paket_id', '=', 'paket_bermain.id')
             ->where('peserta_open_match.user_id', $user_id)
             ->where('peserta_open_match.status', 'bergabung')
-            ->where('booking.status', 'aktif')
+            ->where('booking.status', 'selesai')
             ->select('booking.id as booking_id', 'booking.tanggal_booking', 'booking.jam_booking', 'users.nama_lengkap', 'paket_bermain.nama_paket', 'peserta_open_match.id as partisipasi_id')
             ->orderBy('booking.tanggal_booking', 'asc')
             ->orderBy('booking.jam_booking', 'asc')

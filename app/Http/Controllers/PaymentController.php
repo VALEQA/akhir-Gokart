@@ -30,17 +30,19 @@ class PaymentController extends Controller
             ->where('b.status', 'aktif')
             ->where('b.user_id', $userId);
 
-        // Bagian B: Booking tempat kita gabung open match
+        // Bagian B: Booking tempat kita gabung open match.
+        // PENTING: tagihan partisipan digerbang oleh pom.status_bayar milik DIA SENDIRI,
+        // BUKAN oleh b.status (booking induk selalu 'selesai' begitu bisa di-join).
         $allBookings = DB::table('peserta_open_match as pom')
             ->join('booking as b', 'pom.booking_id', '=', 'b.id')
             ->join('paket_bermain as p', 'b.paket_id', '=', 'p.id')
             ->select(
-                'b.id', 'b.user_id', 'b.total_harga', 'b.status', 'b.created_at', 
+                'b.id', 'b.user_id', 'b.total_harga', 'pom.status_bayar as status', 'b.created_at', 
                 'b.tanggal_booking', 'b.jam_booking', 'b.jumlah_orang',
                 'p.nama_paket', DB::raw('1 as is_partisipan'), DB::raw('p.harga as harga_satuan')
             )
-            ->where('b.status', 'aktif')
             ->where('pom.status', 'bergabung')
+            ->where('pom.status_bayar', 'aktif')
             ->where('pom.user_id', $userId)
             ->union($myOwnBookings)
             ->orderBy('created_at', 'desc')
@@ -65,6 +67,8 @@ class PaymentController extends Controller
 
             if ($cekPartisipan) {
                 // JIKA USER ADALAH PESERTA YANG GABUNG MATCH
+                // Tidak lagi syarat b.status = 'aktif' -- booking induk yang bisa di-join
+                // justru SELALU 'selesai' (sudah dibayar host), jadi tidak relevan di sini.
                 $dataBooking = DB::table('booking as b')
                     ->join('paket_bermain as p', 'b.paket_id', '=', 'p.id')
                     ->join('users as u', 'b.user_id', '=', 'u.id') 
@@ -74,12 +78,15 @@ class PaymentController extends Controller
                         'u.nama_lengkap', 'u.email', 'u.nomor_hp'
                     )
                     ->where('b.id', $selectedId)
-                    ->where('b.status', 'aktif')
                     ->first();
 
                 if ($dataBooking) {
                     // Paksa harga menjadi harga satuan gokart
-                    $dataBooking->total_harga = intval($dataBooking->harga_satuan); 
+                    $dataBooking->total_harga = intval($dataBooking->harga_satuan);
+                    // Timpa dengan bukti transfer & status bayar milik PARTISIPAN ini sendiri,
+                    // bukan punya host (yang sudah pasti terisi & lunas duluan).
+                    $dataBooking->bukti_transfer = $cekPartisipan->bukti_transfer;
+                    $dataBooking->status = $cekPartisipan->status_bayar;
                 }
             } else {
                 // JIKA USER ADALAH PEMILIK UTAMA LAPANGAN (BOOKING MANDIRI)
@@ -121,44 +128,48 @@ class PaymentController extends Controller
         $userId = Auth::id();
         $bookingId = $request->input('booking_id');
 
-        $booking = DB::table('booking')
-            ->where('id', $bookingId)
-            ->where('status', 'aktif')
-            ->first();
+        $booking = DB::table('booking')->where('id', $bookingId)->first();
 
         if (!$booking) {
             return redirect()->route('pembayaran.index')
-                ->with('error', 'Tagihan tidak ditemukan atau sudah diproses.');
+                ->with('error', 'Tagihan tidak ditemukan.');
         }
 
         // Pastikan user berhak: pemilik booking ATAU partisipan open match yang sudah bergabung
         $isOwner = $booking->user_id == $userId;
-        $isPartisipan = DB::table('peserta_open_match')
+        $partisipan = DB::table('peserta_open_match')
             ->where('booking_id', $bookingId)
             ->where('user_id', $userId)
             ->where('status', 'bergabung')
-            ->exists();
+            ->first();
 
-        if (!$isOwner && !$isPartisipan) {
+        if (!$isOwner && !$partisipan) {
             abort(403, 'Anda tidak berhak membayar tagihan ini.');
         }
 
-        // PENTING: Di hosting ini, folder Laravel (tempat kode ini berjalan) TERPISAH
-        // dari folder yang benar-benar dilayani ke browser. Folder yang benar-benar
-        // diakses publik itu ada satu tingkat di ATAS folder Laravel, lalu masuk ke
-        // folder "public" di sana (itu sebabnya semua asset lain selalu ditulis
-        // asset('public/...') di view). Maka file HARUS ditulis ke lokasi yang sama,
-        // bukan ke public_path() bawaan Laravel yang tidak kepanggil dari browser.
-        $file = $request->file('bukti_transfer');
-        $filename = 'BK' . $bookingId . '_' . time() . '.' . $file->getClientOriginalExtension();
-
-        $realPublicFolder = realpath(base_path('../public'));
-        if (!$realPublicFolder) {
-            // fallback kalau strukturnya ternyata beda dari dugaan
-            $realPublicFolder = public_path();
+        // Cegah upload dobel kalau tagihan pihak yang bersangkutan sudah diproses admin
+        if ($isOwner && $booking->status !== 'aktif') {
+            return redirect()->route('pembayaran.index')
+                ->with('error', 'Tagihan ini sudah diproses.');
+        }
+        if (!$isOwner && $partisipan->status_bayar !== 'aktif') {
+            return redirect()->route('pembayaran.index')
+                ->with('error', 'Tagihan ini sudah diproses.');
         }
 
-        $destinationFolder = $realPublicFolder . DIRECTORY_SEPARATOR . 'bukti_transfer';
+        // Folder tujuan upload. Struktur standar Laravel: public/ ada di dalam
+        // project, jadi pakai public_path(). Kalau project di-deploy dengan layout
+        // lain (docroot terpisah, aplikasi di subfolder), fallback ke folder
+        // "public" satu tingkat di atas folder aplikasi.
+        $file = $request->file('bukti_transfer');
+        $filename = 'BK' . $bookingId . ($isOwner ? '' : ('P' . $partisipan->id)) . '_' . time() . '.' . $file->getClientOriginalExtension();
+
+        $publicFolder = public_path();
+        if (!is_dir($publicFolder) && is_dir(base_path('../public'))) {
+            $publicFolder = base_path('../public');
+        }
+
+        $destinationFolder = $publicFolder . DIRECTORY_SEPARATOR . 'bukti_transfer';
 
         if (!file_exists($destinationFolder)) {
             mkdir($destinationFolder, 0755, true);
@@ -171,10 +182,16 @@ class PaymentController extends Controller
         // ditambahkan pas dipanggil pakai asset() di view)
         $path = 'bukti_transfer/' . $filename;
 
-        DB::table('booking')->where('id', $bookingId)->update([
-            'bukti_transfer' => $path,
-            'updated_at' => now(),
-        ]);
+        if ($isOwner) {
+            DB::table('booking')->where('id', $bookingId)->update([
+                'bukti_transfer' => $path,
+                'updated_at' => now(),
+            ]);
+        } else {
+            DB::table('peserta_open_match')->where('id', $partisipan->id)->update([
+                'bukti_transfer' => $path,
+            ]);
+        }
 
         return redirect()->route('pembayaran.index', ['id' => $bookingId])
             ->with('success', 'Bukti pembayaran berhasil dikirim! Menunggu verifikasi admin.');

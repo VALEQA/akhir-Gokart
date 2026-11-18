@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar - Go-Kart Racing Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('public/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 <body>
     <div class="container">

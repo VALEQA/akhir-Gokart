@@ -49,6 +49,24 @@ class AdminController extends Controller
             ->orderBy('booking.created_at', 'asc')
             ->get();
 
+        // Tagihan partisipan Open Match yang sudah upload bukti transfer & menunggu verifikasi
+        $pembayaranPeserta = DB::table('peserta_open_match as pom')
+            ->join('booking as b', 'pom.booking_id', '=', 'b.id')
+            ->join('users as u', 'pom.user_id', '=', 'u.id')
+            ->join('paket_bermain as p', 'b.paket_id', '=', 'p.id')
+            ->where('pom.status', 'bergabung')
+            ->where('pom.status_bayar', 'aktif')
+            ->whereNotNull('pom.bukti_transfer')
+            ->where('pom.bukti_transfer', '!=', '')
+            ->select(
+                'pom.id', 'pom.bukti_transfer', 'b.id as booking_id',
+                'b.tanggal_booking', 'b.jam_booking',
+                'u.nama_lengkap', 'u.nomor_hp',
+                'p.nama_paket', 'p.harga as total_harga'
+            )
+            ->orderBy('pom.waktu_bergabung', 'asc')
+            ->get();
+
         return view('admin.dashboard', compact(
             'user',
             'total_users',
@@ -56,7 +74,8 @@ class AdminController extends Controller
             'booking_selesai',
             'total_pendapatan',
             'pembayaran',
-            'semuaMenunggu'
+            'semuaMenunggu',
+            'pembayaranPeserta'
         ));
     }
 
@@ -79,6 +98,30 @@ class AdminController extends Controller
                 'bukti_transfer' => null
             ]);
             return redirect()->route('admin.dashboard')->with('error', 'Bukti Transfer #BK-' . $id . ' Ditolak! File dibersihkan.');
+        }
+
+        return redirect()->route('admin.dashboard');
+    }
+
+    public function prosesAksiPeserta($action, $id)
+    {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard');
+        }
+
+        if ($action === 'setujui') {
+            $peserta = DB::table('peserta_open_match')->where('id', $id)->first();
+            if ($peserta) {
+                DB::table('peserta_open_match')->where('id', $id)->update(['status_bayar' => 'selesai']);
+                DB::table('users')->where('id', $peserta->user_id)->increment('total_bermain');
+                return redirect()->route('admin.dashboard')->with('success', 'Konfirmasi Berhasil! Pembayaran Partisipan #' . $id . ' LUNAS & Data Total Bermain Berhasil Ditambahkan (+1).');
+            }
+        } elseif ($action === 'tolak') {
+            DB::table('peserta_open_match')->where('id', $id)->update([
+                'status_bayar' => 'aktif',
+                'bukti_transfer' => null
+            ]);
+            return redirect()->route('admin.dashboard')->with('error', 'Bukti Transfer Partisipan #' . $id . ' Ditolak! File dibersihkan.');
         }
 
         return redirect()->route('admin.dashboard');

@@ -26,7 +26,7 @@ class OpenMatchController extends Controller
                 DB::raw("(SELECT COUNT(*) FROM peserta_open_match pom WHERE pom.booking_id = b.id AND pom.status = 'bergabung') as jumlah_peserta")
             )
             ->where('b.is_open_match', 1)
-            ->where('b.status', 'aktif')
+            ->where('b.status', 'selesai')
             ->where('b.user_id', '!=', $userId)
             ->where(function($query) {
                 $query->where('b.tanggal_booking', '>', Carbon::today())
@@ -65,7 +65,7 @@ if ($filterTanggal) {
             )
             ->where('pom.user_id', $userId)
             ->where('pom.status', 'bergabung')
-            ->where('b.status', 'aktif')
+            ->where('b.status', 'selesai')
             ->orderBy('b.tanggal_booking', 'asc')
             ->orderBy('b.jam_booking', 'asc')
             ->get();
@@ -89,7 +89,7 @@ if ($filterTanggal) {
         $booking = DB::table('booking as b')
             ->select('b.*', DB::raw("(SELECT COUNT(*) FROM peserta_open_match pom WHERE pom.booking_id = b.id AND pom.status = 'bergabung') as jumlah_peserta"))
             ->where('b.id', $bookingId)
-            ->where('b.status', 'aktif')
+            ->where('b.status', 'selesai')
             ->where('b.is_open_match', 1)
             ->first();
 

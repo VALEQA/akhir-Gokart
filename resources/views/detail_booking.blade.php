@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Booking #BK{{ str_pad($data->id, 3, '0', STR_PAD_LEFT) }}</title>
-    <link rel="stylesheet" href="{{ asset('public/style1.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/riwayat_booking.css') }}">
+    <link rel="stylesheet" href="{{ asset('style1.css') }}">
+    <link rel="stylesheet" href="{{ asset('riwayat_booking.css') }}">
 </head>
 <body>
 <div class="container">

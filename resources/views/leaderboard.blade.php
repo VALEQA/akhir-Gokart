@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoKart Racing - Leaderboard</title>
-    <link rel="stylesheet" href="{{ asset('public/style-leaderboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('style-leaderboard.css') }}">
 </head>
 <body>
     <div class="container">
@@ -97,6 +97,6 @@
         </main>
     </div>
     
-    <script src="{{ asset('public/script.js') }}"></script>
+    <script src="{{ asset('script.js') }}"></script>
 </body>
 </html>

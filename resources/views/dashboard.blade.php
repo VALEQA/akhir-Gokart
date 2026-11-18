@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoKart Racing - Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('public/style-dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('style-dashboard.css') }}">
     <style>
         .aksi-container {
             display: grid;
@@ -223,6 +223,6 @@
     </main>
 </div>
 
-<script src="{{ asset('public/script.js') }}"></script>
+<script src="{{ asset('script.js') }}"></script>
 </body>
 </html>

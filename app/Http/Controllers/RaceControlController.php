@@ -18,24 +18,50 @@ class RaceControlController extends Controller
             abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
 
-        $kandidat_balap = DB::table('booking')
-            ->join('users', 'booking.user_id', '=', 'users.id')
-            ->join('paket_bermain', 'booking.paket_id', '=', 'paket_bermain.id')
-            ->leftJoin('hasil_balapan', 'booking.id', '=', 'hasil_balapan.booking_id')
+        // Kandidat A: pemilik booking (host)
+        $hostBalap = DB::table('booking as b')
+            ->join('users as u', 'b.user_id', '=', 'u.id')
+            ->join('paket_bermain as p', 'b.paket_id', '=', 'p.id')
+            ->leftJoin('hasil_balapan as h', function ($join) {
+                $join->on('b.id', '=', 'h.booking_id')
+                     ->on('u.id', '=', 'h.user_id');
+            })
             ->select(
-                'booking.id AS booking_id', 
-                'booking.tanggal_booking', 
-                'booking.jam_booking', 
-                'users.id AS user_id', 
-                'users.nama_lengkap', 
-                'paket_bermain.nama_paket', 
-                'hasil_balapan.sektor_1', 
-                'hasil_balapan.sektor_2', 
-                'hasil_balapan.sektor_3', 
-                'hasil_balapan.total_lap'
+                'b.id AS booking_id',
+                'b.tanggal_booking',
+                'b.jam_booking',
+                'u.id AS user_id',
+                'u.nama_lengkap',
+                'p.nama_paket',
+                'h.sektor_1', 'h.sektor_2', 'h.sektor_3', 'h.total_lap'
             )
-            ->where('booking.status', 'selesai')
-            ->orderBy('booking.id', 'desc')
+            ->where('b.status', 'selesai');
+
+        // Kandidat B: peserta open match yang statusnya masih gabung & sudah lunas diverifikasi admin
+        $pesertaBalap = DB::table('peserta_open_match as pom')
+            ->join('booking as b', 'pom.booking_id', '=', 'b.id')
+            ->join('users as u', 'pom.user_id', '=', 'u.id')
+            ->join('paket_bermain as p', 'b.paket_id', '=', 'p.id')
+            ->leftJoin('hasil_balapan as h', function ($join) {
+                $join->on('b.id', '=', 'h.booking_id')
+                     ->on('u.id', '=', 'h.user_id');
+            })
+            ->select(
+                'b.id AS booking_id',
+                'b.tanggal_booking',
+                'b.jam_booking',
+                'u.id AS user_id',
+                'u.nama_lengkap',
+                'p.nama_paket',
+                'h.sektor_1', 'h.sektor_2', 'h.sektor_3', 'h.total_lap'
+            )
+            ->where('b.status', 'selesai')
+            ->where('pom.status', 'bergabung')
+            ->where('pom.status_bayar', 'selesai');
+
+        $kandidat_balap = $hostBalap
+            ->unionAll($pesertaBalap)
+            ->orderBy('booking_id', 'desc')
             ->get();
 
         return view('admin.input_waktu', compact('kandidat_balap'));
@@ -66,9 +92,8 @@ class RaceControlController extends Controller
         $total_lap  = $sektor_1 + $sektor_2 + $sektor_3;
 
         DB::table('hasil_balapan')->updateOrInsert(
-            ['booking_id' => $booking_id],
+            ['booking_id' => $booking_id, 'user_id' => $user_id],
             [
-                'user_id'    => $user_id,
                 'sektor_1'   => $sektor_1,
                 'sektor_2'   => $sektor_2,
                 'sektor_3'   => $sektor_3,

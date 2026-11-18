@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Go-Kart Racing Hub - Full Throttle</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('public/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
     <style>
         .price-ww-grid {
             display: grid;
@@ -190,7 +190,7 @@
                 <path d="M 900,300 C 900,350 850,350 800,350 L 500,350 C 450,350 450,450 400,450" stroke="#f57f17" stroke-width="40" fill="none" />
                 <path d="M 100,100 C 100,50 300,50 300,50 L 900,50 C 950,50 950,150 950,200 C 950,250 900,250 900,300 C 900,350 850,350 800,350 L 500,350 C 450,350 450,450 400,450 L 150,450 C 100,450 100,350 100,300 Z" stroke="#d32f2f" stroke-width="5" stroke-dasharray="15, 10" fill="none" />
                 <g id="car-group">
-                    <image href="{{ asset('public/kart.png') }}" x="-30" y="-35" width="60" height="60" />
+                    <image href="{{ asset('kart.png') }}" x="-30" y="-35" width="60" height="60" />
                     <animateMotion dur="6s" repeatCount="indefinite" path="M 100,100 C 100,50 300,50 300,50 L 900,50 C 950,50 950,150 950,200 C 950,250 900,250 900,300 C 900,350 850,350 800,350 L 500,350 C 450,350 450,450 400,450 L 150,450 C 100,450 100,350 100,300 Z" rotate="auto" />
                 </g>
                 <g id="start-finish-group">
@@ -266,29 +266,63 @@
         </div>
     </div>
 
-    <footer style="padding: 2.5rem 1.5rem; text-align: center; line-height: 1.7;">
-        <div style="max-width: 620px; margin: 0 auto;">
-            <p style="font-weight: 700; margin-bottom: 0.4rem;">Nama Kelompok: Full Throttle</p>
+    <footer>
+        <div class="footer-flag-strip"></div>
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-brand-col">
+                    <p class="footer-group-name">Full Throttle</p>
+                    <p class="footer-tagline">Proyek tugas Go-Kart Racing Hub — dibangun untuk memenuhi mata kuliah pemrograman web.</p>
+                    <p class="footer-meta-line"><strong>Kelas</strong> KH002</p>
+                    <p class="footer-meta-line"><strong>Tahun Akademik</strong> 2025/2026 Genap</p>
+                </div>
 
-            <p style="font-weight: 600; margin: 1rem 0 0.3rem;">Anggota Kelompok:</p>
-            <p style="margin: 0;">1. Ahmad Faishal Baihaqi (202400801192)</p>
-            <p style="margin: 0;">2. Nunezco Esiyuan S.A (20240801091)</p>
-            <p style="margin: 0 0 1rem;">3. Sakha Yusuf Pasha (20240801052)</p>
+                <div class="footer-team-col">
+                    <p class="footer-col-title">Anggota Kelompok</p>
+                    <ul class="footer-member-list">
+                        <li>
+                            <span class="member-avatar">AF</span>
+                            <span class="member-info">
+                                <span class="member-name">Ahmad Faishal Baihaqi</span>
+                                <span class="member-nim">202400801192</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="member-avatar">NE</span>
+                            <span class="member-info">
+                                <span class="member-name">Nunezco Esiyuan S.A</span>
+                                <span class="member-nim">20240801091</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="member-avatar">SY</span>
+                            <span class="member-info">
+                                <span class="member-name">Sakha Yusuf Pasha</span>
+                                <span class="member-nim">20240801052</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
 
-            <p style="font-weight: 600; margin: 0 0 0.3rem;">Tautan Nama Domain Masing-masing:</p>
-            <p style="margin: 0;">1. <a href="https://funcart.site" target="_blank" style="color: inherit; text-decoration: underline;">funcart.site</a> / <a href="https://dash.infinityfree.com/accounts/if0_42376048/domains/runcart.infinityfree.io" target="_blank" style="color: inherit; text-decoration: underline;">runcart.infinityfree.io</a></p>
-            <p style="margin: 0;">2. .</p>
-            <p style="margin: 0 0 1rem;">3. .</p>
+                <div class="footer-links-col">
+                    <p class="footer-col-title">Tautan Domain</p>
+                    <ul class="footer-domain-list">
+                        <li><span class="link-icon">▸</span><a href="https://funcart.site" target="_blank">funcart.site</a></li>
+                        <li><span class="link-icon">▸</span><a href="http://runcart.infinityfree.io/" target="_blank">runcart.infinityfree.io</a></li>
+                        <li><span class="link-icon">▸</span><a href="http://fullthrottle.site.je/" target="_blank">fullthrottle.site.je</a></li>
+        				<li><span class="link-icon">▸</span><a href="http://gokartracing.infinityfree.me/" target="_blank">gokartracing.infinityfree.me</a></li>
+                    </ul>
+                </div>
+            </div>
 
-            <p style="margin: 0;">Dosen Pengampu MK: Dewi Setiowati, A.Md., S.Pd., M.Tr.Kom.</p>
-            <p style="margin: 0;">Kelas KH002</p>
-            <p style="margin: 0.6rem 0 0; opacity: 0.8;">Tahun Akademik 2025/2026 Genap</p>
-
-            <p style="margin: 1.2rem 0 0; opacity: 0.7; font-size: 0.85em;">© 2026 Go-Kart Racing Hub. All rights reserved.</p>
+            <div class="footer-bottom-bar">
+                <span class="footer-lecturer">Dosen Pengampu MK: Dewi Setiowati, A.Md., S.Pd., M.Tr.Kom.</span>
+                <span class="footer-copyright">© 2026 Go-Kart Racing Hub. All rights reserved.</span>
+            </div>
         </div>
     </footer>
 
-    <script src="{{ asset('public/script.js') }}"></script>
+    <script src="{{ asset('script.js') }}"></script>
     <script>
     function initRpmCurve() {
         const canvas = document.getElementById('rpmCurveCanvas');

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoKart Admin - Riwayat Keuangan</title>
-    <link rel="stylesheet" href="{{ asset('public/style-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('style-admin.css') }}">
     <style>
         .search-box { display: flex; gap: 10px; margin-bottom: 1.5rem; max-width: 500px; }
         .search-input { flex: 1; padding: 0.6rem 1rem; border: 1px solid #ddd; border-radius: 8px; outline: none; font-size: 0.95rem; }

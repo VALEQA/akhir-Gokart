@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoKart Admin - Edit Profil User</title>
-    <link rel="stylesheet" href="{{ asset('public/style-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('style-admin.css') }}">
     <style>
         .edit-container { max-width: 600px; margin: 2rem auto 0 auto; }
         .form-group { margin-bottom: 1.2rem; }

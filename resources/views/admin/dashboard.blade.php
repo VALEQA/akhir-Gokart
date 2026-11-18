@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoKart Admin - Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('public/style-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('style-admin.css') }}">
 </head>
 <body>
     <div class="container">
@@ -124,7 +124,7 @@
                                         Rp {{ number_format($row->total_harga, 0, ',', '.') }}
                                     </td>
                                     <td style="text-align: center;">
-                                        <a href="{{ asset('public/' . $row->bukti_transfer) }}" target="_blank" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; text-decoration:none;">🔍 Lihat Bukti</a>
+                                        <a href="{{ asset('' . $row->bukti_transfer) }}" target="_blank" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; text-decoration:none;">🔍 Lihat Bukti</a>
                                     </td>
                                     <td style="text-align: center;">
                                         <div class="action-buttons">
@@ -182,7 +182,7 @@
                                     </td>
                                     <td style="text-align: center;">
                                         @if(!empty($row->bukti_transfer))
-                                            <a href="{{ asset('public/' . $row->bukti_transfer) }}" target="_blank" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; text-decoration:none;">🔍 Ada</a>
+                                            <a href="{{ asset('' . $row->bukti_transfer) }}" target="_blank" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; text-decoration:none;">🔍 Ada</a>
                                         @else
                                             <span style="color: #6b7280; font-weight: bold; background: #f3f4f6; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem;">💬 WA Saja</span>
                                         @endif
@@ -199,9 +199,65 @@
                     </table>
                 </div>
             </section>
+            <section class="card table-container" style="margin-top: 2rem;">
+                <h3 style="border-left: 4px solid var(--dark); padding-left: 10px; margin-bottom: 1.5rem;">Persetujuan Pembayaran Partisipan Open Match</h3>
+                <p style="color: var(--gray); font-size: 0.85rem; margin-top: -0.8rem; margin-bottom: 1.2rem;">
+                    Ini tagihan orang-orang yang gabung ke Open Match punya orang lain (terpisah dari tagihan pemilik booking di atas).
+                </p>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID Booking</th>
+                                <th>Nama Peserta</th>
+                                <th>Paket Pilihan</th>
+                                <th style="text-align: right;">Total Tagihan</th>
+                                <th style="text-align: center;">Status Verifikasi</th>
+                                <th style="text-align: center;">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(count($pembayaranPeserta) == 0)
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--gray); padding: 3rem; font-style: italic;">
+                                    Belum ada pembayaran partisipan yang perlu divalidasi.
+                                </td>
+                            </tr>
+                            @else
+                                @foreach($pembayaranPeserta as $row)
+                                <tr>
+                                    <td><strong>#BK-{{ $row->booking_id }}</strong></td>
+                                    <td>
+                                        <strong>{{ $row->nama_lengkap }}</strong><br>
+                                        <small style="color: var(--gray);">HP: {{ $row->nomor_hp }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge-paket">{{ $row->nama_paket }}</span><br>
+                                        <small>{{ date('d M Y', strtotime($row->tanggal_booking)) }} - Pukul {{ date('H:i', strtotime($row->jam_booking)) }}</small>
+                                    </td>
+                                    <td style="text-align: right; font-weight: bold; color: #1d3557;">
+                                        Rp {{ number_format($row->total_harga, 0, ',', '.') }}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a href="{{ asset('' . $row->bukti_transfer) }}" target="_blank" style="color: #d97706; font-weight: bold; background: #fef3c7; padding: 4px 10px; border-radius: 6px; font-size: 0.85rem; text-decoration:none;">🔍 Lihat Bukti</a>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <div class="action-buttons">
+                                            <a href="{{ route('admin.dashboard.proses_peserta', ['action' => 'setujui', 'id' => $row->id]) }}" class="btn-approve" onclick="return confirm('Apakah uang transferan peserta ini benar-benar sudah masuk ke rekening?')">Terima</a>
+                                            <a href="{{ route('admin.dashboard.proses_peserta', ['action' => 'tolak', 'id' => $row->id]) }}" class="btn-reject" onclick="return confirm('Tolak bukti transfer peserta ini dan minta kirim ulang?')">Tolak</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </main>
     </div>
 
-    <script src="{{ asset('public/script.js') }}"></script>
+    <script src="{{ asset('script.js') }}"></script>
 </body>
 </html>

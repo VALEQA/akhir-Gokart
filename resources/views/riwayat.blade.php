@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Booking - GoKart Racing</title>
-    <link rel="stylesheet" href="{{ asset('public/style1.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/riwayat_booking.css') }}">
+    <link rel="stylesheet" href="{{ asset('style1.css') }}">
+    <link rel="stylesheet" href="{{ asset('riwayat_booking.css') }}">
 </head>
 <body>
 <div class="container">
@@ -77,11 +77,16 @@
         @foreach($riwayat as $row)
             @php
                 $status = strtolower($row->status);
-                $can_cancel = ($status === 'aktif' && empty($row->bukti_transfer));
+                $can_cancel = (!$row->is_partisipan) && ($status === 'aktif' && empty($row->bukti_transfer));
             @endphp
             <tr>
                 <td><strong>#BK{{ str_pad($row->id, 3, '0', STR_PAD_LEFT) }}</strong></td>
-                <td>{{ htmlspecialchars($row->nama_paket) }}</td>
+                <td>
+                    {{ htmlspecialchars($row->nama_paket) }}
+                    @if($row->is_partisipan)
+                        <br><small style="color:var(--gray);">🤝 Ikut Open Match</small>
+                    @endif
+                </td>
                 <td>{{ date('d M Y', strtotime($row->tanggal_booking)) }}</td>
                 <td>{{ date('H:i', strtotime($row->jam_booking)) }} WIB</td>
                 <td><strong>Rp {{ number_format($row->total_harga, 0, ',', '.') }}</strong></td>
@@ -92,7 +97,11 @@
                 </td>
                 <td>
                     <div class="btn-action-group">
-                        <a href="{{ route('booking.detail', $row->id) }}" class="btn-detail">Detail</a>
+                        @if($row->is_partisipan)
+                            <a href="{{ route('pembayaran.index', ['id' => $row->id]) }}" class="btn-detail">Detail</a>
+                        @else
+                            <a href="{{ route('booking.detail', $row->id) }}" class="btn-detail">Detail</a>
+                        @endif
                         @if($can_cancel)
                             <button class="btn-cancel" onclick="confirmCancel({{ $row->id }}, '{{ date('d M Y', strtotime($row->tanggal_booking)) }}', '{{ htmlspecialchars($row->nama_paket) }}')">
                                 Batalkan

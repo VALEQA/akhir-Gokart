@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GoKart Racing - Pembayaran</title>
-    <link rel="stylesheet" href="{{ asset('public/style1.css') }}">
+    <link rel="stylesheet" href="{{ asset('style1.css') }}">
     
     <style>
         /* Tetapkan CSS bawaan asli Anda di sini */
@@ -251,7 +251,7 @@
                         </div>
                         
                         <p style="margin-top: 15px; margin-bottom: 10px; color: var(--dark);"><strong>Atau Scan QRIS:</strong></p>
-                        <img src="{{ asset('public/qris.jpeg') }}" alt="QRIS Pembayaran" style="max-width: 200px; border-radius: 10px; border: 1px solid #ddd; padding: 5px; margin-bottom: 20px;">
+                        <img src="{{ asset('qris.jpeg') }}" alt="QRIS Pembayaran" style="max-width: 200px; border-radius: 10px; border: 1px solid #ddd; padding: 5px; margin-bottom: 20px;">
 
                         @if(session('success'))
                             <div class="alert-error" style="background-color:#d4edda; color:#155724; border-color:#c3e6cb; border-left-color:#28a745; margin-bottom: 15px;">

@@ -29,6 +29,12 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout.get');
 // Rute Terproteksi (Wajib Login)
 Route::middleware(['auth'])->group(function () {
     Route::get('/pembayaran', [PaymentController::class, 'index'])->name('pembayaran.index');
+    // Fallback: kalau ada yang akses /pembayaran/upload via GET (refresh, bookmark,
+    // koneksi putus saat upload, dsb), arahkan balik ke halaman tagihan, bukan 405 mentah.
+    Route::get('/pembayaran/upload', function () {
+        return redirect()->route('pembayaran.index')
+            ->with('error', 'Sesi upload tidak valid, silakan coba lagi.');
+    });
     Route::post('/pembayaran/upload', [PaymentController::class, 'store'])->name('pembayaran.store')->middleware('auth');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -51,9 +57,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profil', [ProfileController::class, 'index'])->name('profil.index');
     Route::post('/profil/update', [ProfileController::class, 'update'])->name('profil.update');
     Route::post('/profil/password', [ProfileController::class, 'updatePassword'])->name('profil.password');
+    Route::post('/profil/foto/hapus', [ProfileController::class, 'deletePhoto'])->name('profil.photo.delete');
     
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/dashboard/proses/{action}/{id}', [AdminController::class, 'prosesAksi'])->name('admin.dashboard.proses');
+    Route::get('/admin/dashboard/proses-peserta/{action}/{id}', [AdminController::class, 'prosesAksiPeserta'])->name('admin.dashboard.proses_peserta');
 
     Route::get('/admin/paket', [PaketController::class, 'index'])->name('admin.kelolapaket');
     Route::get('/admin/paket/edit/{id}', [PaketController::class, 'edit'])->name('admin.paket.edit');

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GoKart Racing - Hasil Balapan</title>
-    <link rel="stylesheet" href="{{ asset('public/style-hasilbalapan.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('style-hasilbalapan.css') }}"> 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -101,7 +101,7 @@
         </main>
     </div>
 
-    <script src="{{ asset('public/script-hasil-balapan.js') }}"></script>
+    <script src="{{ asset('script-hasil-balapan.js') }}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const ctx = document.getElementById('performanceChart');
